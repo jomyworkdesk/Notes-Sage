@@ -1,0 +1,7 @@
+CREATE TABLE EM_GoodsServiceType (
+    AutoIndex INT IDENTITY(1,1) PRIMARY KEY, 
+    Value INT UNIQUE,               
+    DisplayName VARCHAR(300),
+    IsActive BIT DEFAULT 1,
+    CreatedDate DATETIME DEFAULT GETDATE()
+);
