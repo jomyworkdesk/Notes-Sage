@@ -1,0 +1,24 @@
+✅ Step 1: Create a Temp/Staging Table
+CREATE TABLE #Temp_Validations (
+    Field VARCHAR(100),
+    Description VARCHAR(300),
+    Error VARCHAR(100)
+);
+
+✅ Step 2: Import CSV into Temp Table
+BULK INSERT #Temp_Validations
+FROM 'C:\Path\yourfile.csv'
+WITH (
+    FIRSTROW = 2,              -- skip header
+    FIELDTERMINATOR = ',',     
+    ROWTERMINATOR = '\n',
+    TABLOCK
+);
+
+✅ Step 3: Insert into Final Table (Mapping)
+INSERT INTO E_Validations (Field, Description, Error)
+SELECT 
+    Field,
+    Description,
+    Error
+FROM #Temp_Validations;
