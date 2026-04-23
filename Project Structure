@@ -1,0 +1,741 @@
+# 📋 ART Gateway - Project Structure & Developer Guide
+
+**Version**: 1.0.0  
+**Date**: April 2026  
+**Purpose**: e-Invoice Middleware for Sage Application  
+**Technology Stack**: Node.js + Express + Prisma ORM + SQL Server
+
+---
+
+## 📁 **COMPLETE PROJECT STRUCTURE**
+
+```
+ART Gateway/
+├── Backend/                          # Main application code
+│   ├── app.js                        # Entry point - initializes Express server
+│   ├── prismaClient.js               # Database connection setup
+│   ├── package.json                  # Dependencies & build scripts
+│   ├── Dockerfile                    # Docker configuration (development)
+│   │
+│   ├── config/
+│   │   ├── appConfig.js              # Environment & app settings
+│   │   └── validateEnv.js            # Validates required env variables
+│   │
+│   ├── middleware/
+│   │   ├── errorHandler.js           # Central error handling
+│   │   ├── validation.js             # Input validation middleware
+│   │   └── auth.js                   # JWT authentication
+│   │
+│   ├── controllers/
+│   │   ├── invoiceController.js      # Invoice request handlers
+│   │   └── authController.js         # Authentication handlers
+│   │
+│   ├── services/
+│   │   ├── invoiceService.js         # Invoice business logic
+│   │   ├── authService.js            # Auth business logic
+│   │   └── invoiceSyncService.js     # External sync logic
+│   │
+│   ├── repositories/
+│   │   ├── invoiceRepository.js      # Invoice database queries
+│   │   ├── authRepository.js         # Auth database queries
+│   │   └── invoiceSyncRepository.js  # Sync database queries
+│   │
+│   ├── routes/
+│   │   ├── invoice.js                # Invoice API routes
+│   │   └── auth.js                   # Auth API routes
+│   │
+│   ├── prisma/
+│   │   └── schema.prisma             # Database schema definition
+│   │
+│   ├── CronJobs/
+│   │   └── invoiceSyncJob.js         # Scheduled invoice sync
+│   │
+│   ├── utils/
+│   │   ├── errors.js                 # Custom error classes
+│   │   ├── logger.js                 # Logging utility
+│   │   └── validation.js             # Validation helpers
+│   │
+│   └── scripts/
+│       └── prismaPing.js             # Database connectivity test
+│
+├── Frontend/                         # React web application
+│   ├── src/
+│   │   ├── App.jsx                   # Main React component
+│   │   ├── index.css                 # Global styles
+│   │   ├── main.jsx                  # React entry point
+│   │   ├── components/
+│   │   │   ├── Header/               # Header component
+│   │   │   ├── Invoices/             # Invoice components
+│   │   │   └── Layout/               # Layout components
+│   │   └── pages/
+│   │       ├── Dashboard.jsx
+│   │       ├── Invoices.jsx
+│   │       ├── Clients.jsx
+│   │       ├── Login.jsx
+│   │       ├── Settings.jsx
+│   │       └── Errors.jsx
+│   ├── package.json
+│   ├── vite.config.js               # Vite configuration
+│   └── eslint.config.js
+│
+├── dist/                            # Production build output
+│   ├── app.exe                       # Windows executable
+│   ├── run.bat                       # Startup batch script
+│   ├── .env                          # Configuration file
+│   ├── .env.example                  # Config template
+│   └── README.md                     # Deployment guide
+│
+├── docker-compose.yml               # Container orchestration
+├── docker-compose.yml               # Main compose file
+└── PROJECT_STRUCTURE.md             # This file
+```
+
+---
+
+## 🔍 **BACKEND FOLDER BREAKDOWN**
+
+### **🎯 Core Files**
+
+#### `app.js` - Application Entry Point
+```javascript
+// Initializes Express server
+// Configures middleware (logging, CORS, error handling)
+// Sets up routes (invoice, auth)
+// Starts cron jobs
+// Connects to database
+```
+**When to modify**: Adding new routes, middleware, or cron jobs
+
+---
+
+#### `prismaClient.js` - Database Connection
+```javascript
+// Creates Prisma client instance
+// Uses MSSQL adapter for SQL Server
+// Handles connection pooling
+// Provides singleton pattern for production
+```
+**When to modify**: Changing database provider or connection settings
+
+---
+
+### **⚙️ Configuration**
+
+#### `config/appConfig.js`
+```javascript
+// Reads environment variables
+// Exports: PORT, HOST, NODE_ENV, JWT_SECRET, etc.
+// Used across entire application
+```
+**Environment Variables Needed:**
+- `DATABASE_URL` - SQL Server connection string
+- `NODE_ENV` - production/development
+- `PORT` - Server port (default: 3000)
+- `HOST` - Server host (default: 0.0.0.0)
+- `JWT_SECRET` - Token signing secret
+- `INVOICE_SYNC_CRON` - Sync schedule
+
+#### `config/validateEnv.js`
+```javascript
+// Validates required env variables exist
+// Throws error if missing
+// Called at application startup
+```
+
+---
+
+### **🛡️ Middleware Layer**
+
+#### `middleware/errorHandler.js`
+**Purpose**: Catches ALL errors and returns consistent responses
+
+```javascript
+// errorHandler(err, req, res, next)
+// - Logs error details
+// - Handles Prisma errors (P2025, P2002, etc.)
+// - Returns formatted error response
+// - Prevents server crashes
+
+// asyncHandler(fn)
+// - Wraps async functions
+// - Catches promises and passes to errorHandler
+// - Used in all controllers
+```
+
+**When to use:**
+```javascript
+const getInvoices = asyncHandler(async (req, res) => {
+    // Errors automatically caught and handled
+});
+```
+
+#### `middleware/validation.js`
+**Purpose**: Validates request data BEFORE processing
+
+```javascript
+// validateRequestBody({ requiredFields, customValidator })
+// - Checks required fields exist
+// - Runs custom validation logic
+// - Returns 400 if invalid
+
+// sanitizeInput(req, res, next)
+// - Trims whitespace
+// - Cleans string inputs
+// - Prevents XSS attacks
+```
+
+**When to use:**
+```javascript
+router.post("/invoice", 
+    sanitizeInput,
+    validateRequestBody({ requiredFields: ["InvNumber", "SellerName"] }),
+    controller.createInvoice
+);
+```
+
+#### `middleware/auth.js`
+**Purpose**: Protects routes with JWT authentication
+
+**When to use:**
+```javascript
+router.get("/dashboard", auth, controller.getDashboard); // Protected
+```
+
+---
+
+### **🎮 Controllers**
+
+Controllers receive HTTP requests and coordinate responses.
+
+#### `controllers/invoiceController.js`
+
+**Pattern**:
+```javascript
+const getInvoices = async (req, res) => {
+    try {
+        const data = await invoiceService.getInvoices(req.query);
+        res.json({ success: true, data });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+```
+
+**Responsibilities:**
+- Extract request parameters (query, body, params)
+- Call service layer
+- Format response
+- Handle errors
+
+**Don't do in controllers:**
+- Database queries (use repositories)
+- Business logic calculations (use services)
+- Input validation (use middleware)
+
+---
+
+### **💼 Services**
+
+Services contain business logic and orchestrate operations.
+
+#### `services/invoiceService.js`
+
+**Pattern**:
+```javascript
+const getInvoices = async (filters) => {
+    // Business logic here
+    const invoices = await invoiceRepository.getInvoices(filters);
+    
+    // Transform/enrich data
+    return invoices.map(inv => ({
+        ...inv,
+        totalDue: calculateDue(inv)
+    }));
+};
+```
+
+**Responsibilities:**
+- Business logic calculations
+- Data transformation
+- Calling repositories
+- Service orchestration
+
+**Don't do in services:**
+- HTTP request/response handling (use controllers)
+- Direct database queries (use repositories)
+
+---
+
+### **🗄️ Repositories**
+
+Repositories handle all database interactions.
+
+#### `repositories/invoiceRepository.js`
+
+**Pattern - Using Prisma ORM**:
+```javascript
+const getInvoices = async (filters) => {
+    return await prisma.invoice.findMany({
+        where: { /* filters */ },
+        select: { /* fields */ }
+    });
+};
+```
+
+**Pattern - Using Raw SQL**:
+```javascript
+const getComplexData = async () => {
+    return await prisma.$queryRaw`
+        SELECT * FROM E_INVOICE 
+        WHERE InvoiceIssueDate >= ${today}
+    `;
+};
+```
+
+**Responsibilities:**
+- Database queries only
+- Prisma ORM operations
+- Raw SQL for complex queries
+- Data retrieval & persistence
+
+**Don't do in repositories:**
+- Business logic
+- HTTP handling
+- External API calls
+
+---
+
+### **🛣️ Routes**
+
+Routes map HTTP endpoints to controller functions.
+
+#### `routes/invoice.js`
+
+```javascript
+router.get("/invoices/xml", invoiceController.getInvoicesXml);
+router.get("/dashboard", invoiceController.getDashboard);
+router.get("/getinvoices", invoiceController.getInvoices);
+router.post("/invoice", validateRequestBody(...), invoiceController.createInvoice);
+
+module.exports = router;
+```
+
+**In app.js**:
+```javascript
+app.use("/api", invoiceRoute);      // Routes under /api/
+app.use("/api/auth", authRoute);    // Routes under /api/auth/
+```
+
+---
+
+### **🔧 Utils**
+
+#### `utils/errors.js`
+```javascript
+class AppError extends Error {
+    constructor(message, statusCode = 500, code = "INTERNAL_ERROR") {
+        super(message);
+        this.statusCode = statusCode;
+        this.code = code;
+    }
+}
+
+class ValidationError extends AppError { /* ... */ }
+class AuthenticationError extends AppError { /* ... */ }
+class AuthorizationError extends AppError { /* ... */ }
+class NotFoundError extends AppError { /* ... */ }
+```
+
+**Usage**:
+```javascript
+throw new ValidationError("Email is invalid");
+throw new AuthenticationError("Invalid credentials");
+throw new NotFoundError("Invoice not found");
+```
+
+#### `utils/logger.js`
+```javascript
+logger.info("Message");
+logger.error("Error message", { details });
+logger.debug("Debug info");
+```
+
+#### `utils/validation.js`
+```javascript
+validateRequired(obj, fields);      // Check required fields
+validateEmail(email);               // Validate email format
+validateStringLength(str, min, max); // Check string length
+```
+
+---
+
+### **⏰ CronJobs**
+
+#### `CronJobs/invoiceSyncJob.js`
+```javascript
+// Runs on schedule (configured in INVOICE_SYNC_CRON)
+// Syncs invoices from external source
+// Updates database with latest data
+// Handles errors and logging
+```
+
+**Schedule examples**:
+```
+"0 0 * * *"      // Every midnight
+"0 */6 * * *"    // Every 6 hours
+"*/5 * * * *"    // Every 5 minutes
+```
+
+---
+
+### **📊 Prisma Schema**
+
+#### `prisma/schema.prisma`
+```prisma
+model Invoice {
+    InvNumber        String   @id
+    SellerName       String?
+    BuyerName        String?
+    InvoiceIssueDate DateTime?
+    // ... more fields
+}
+
+model Agent {
+    idAgents    Int    @id @default(autoincrement())
+    cAgentName  String
+    cPassword   String
+}
+
+model LoginLog {
+    LogID   Int    @id @default(autoincrement())
+    // ... fields
+}
+```
+
+---
+
+## 🔄 **REQUEST FLOW ARCHITECTURE**
+
+```
+CLIENT REQUEST
+    ↓
+[ROUTE] routes/*.js
+    - Maps URL to controller
+    - router.get("/path", controller.method)
+    ↓
+[MIDDLEWARE]
+    - sanitizeInput → cleans data
+    - validateRequestBody → validates data
+    - auth → checks JWT token
+    ↓
+[CONTROLLER] controllers/*.js
+    - Receives request
+    - Calls service
+    - Returns response
+    ↓
+[SERVICE] services/*.js
+    - Business logic
+    - Data transformation
+    - Calls repository
+    ↓
+[REPOSITORY] repositories/*.js
+    - Database queries
+    - Prisma ORM / Raw SQL
+    ↓
+[DATABASE] SQL Server
+    - Stores/retrieves data
+    ↓
+ERROR?
+    ↓ YES
+[ERROR HANDLER] middleware/errorHandler.js
+    - Catches error
+    - Logs details
+    - Formats response
+    ↓
+RESPONSE
+    - JSON with status code
+    - Back to client
+```
+
+---
+
+## 🚀 **STEP-BY-STEP: CREATE A NEW API**
+
+### **Example: Create "Get Invoices by Today" API**
+
+#### **Step 1: Add Route**
+File: `Backend/routes/invoice.js`
+```javascript
+router.get("/invoices/today", invoiceController.getInvoicesToday);
+```
+
+#### **Step 2: Add Controller**
+File: `Backend/controllers/invoiceController.js`
+```javascript
+const getInvoicesToday = async (req, res) => {
+    try {
+        const invoices = await invoiceService.getInvoicesToday();
+        return res.json({
+            success: true,
+            data: invoices,
+            count: invoices.length
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+module.exports = {
+    // ... existing exports
+    getInvoicesToday
+};
+```
+
+#### **Step 3: Add Service**
+File: `Backend/services/invoiceService.js`
+```javascript
+const getInvoicesToday = async () => {
+    const invoices = await invoiceRepository.getInvoicesToday();
+    return invoices;
+};
+
+module.exports = {
+    // ... existing exports
+    getInvoicesToday
+};
+```
+
+#### **Step 4: Add Repository**
+File: `Backend/repositories/invoiceRepository.js`
+```javascript
+const getInvoicesToday = async () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    return await prisma.$queryRaw`
+        SELECT
+            InvNumber,
+            InvoiceIssueDate,
+            SellerName,
+            BuyerName,
+            fQuantityLineTotIncl AS TotalInclusive,
+            TotalTaxAmount
+        FROM E_INVOICE
+        WHERE InvoiceIssueDate >= ${today}
+          AND InvoiceIssueDate < ${tomorrow}
+        ORDER BY InvoiceIssueDate DESC
+    `;
+};
+
+module.exports = {
+    // ... existing exports
+    getInvoicesToday
+};
+```
+
+---
+
+## ⚠️ **ERROR HANDLING EXPLAINED**
+
+### **How Errors Flow**
+
+```
+Throw Error
+    ↓
+asyncHandler catches it
+    ↓
+errorHandler middleware processes it
+    ↓
+Returns formatted response
+    ↓
+Client receives error
+```
+
+### **Custom Error Usage**
+
+```javascript
+// In service/controller
+const invoiceData = await getInvoice(id);
+if (!invoiceData) {
+    throw new NotFoundError("Invoice not found");
+}
+
+if (!isValidFormat(data)) {
+    throw new ValidationError("Invalid invoice format", [
+        "Field 'InvNumber' is required",
+        "Field 'SellerName' is invalid"
+    ]);
+}
+
+if (!user.isAuthenticated) {
+    throw new AuthenticationError("Login required");
+}
+
+if (!user.hasPermission) {
+    throw new AuthorizationError("You don't have access");
+}
+```
+
+### **Prisma Error Handling**
+
+The error handler automatically converts:
+- `P2025` → 404 Not Found
+- `P2002` → 409 Conflict (duplicate unique field)
+- `P*` → 400 Bad Request (generic database error)
+
+---
+
+## ✅ **VALIDATION EXPLAINED**
+
+### **In Middleware**
+
+```javascript
+router.post("/invoice", 
+    validateRequestBody({
+        requiredFields: ["InvNumber", "SellerName", "BuyerName"],
+        customValidator: (body) => {
+            if (!isValidInvoiceNumber(body.InvNumber)) {
+                return {
+                    isValid: false,
+                    errors: ["Invalid invoice format"]
+                };
+            }
+            return { isValid: true, errors: [] };
+        }
+    }),
+    controller.createInvoice
+);
+```
+
+### **Validation Utilities**
+
+```javascript
+validateRequired(obj, fields);           // Check required
+validateEmail(email);                    // Email format
+validateStringLength(str, 1, 100);       // String length
+sanitizeString(str);                     // Trim & clean
+```
+
+---
+
+## 🔐 **AUTHENTICATION FLOW**
+
+### **Login**
+```javascript
+POST /api/auth/login
+{
+    "username": "agent1",
+    "password": "pass123"
+}
+
+Response:
+{
+    "success": true,
+    "token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+### **Using Token**
+```javascript
+GET /api/dashboard
+Headers: {
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+### **Protected Route**
+```javascript
+router.get("/dashboard", auth, controller.getDashboard);
+
+// auth middleware verifies token
+// If invalid, returns 401 Unauthorized
+```
+
+---
+
+## 📦 **DEPENDENCIES**
+
+| Package | Purpose | Version |
+|---------|---------|---------|
+| `express` | Web framework | ^5.2.1 |
+| `@prisma/client` | ORM | ^7.7.0 |
+| `@prisma/adapter-mssql` | SQL Server adapter | ^7.7.0 |
+| `jsonwebtoken` | JWT authentication | ^9.0.3 |
+| `bcrypt` | Password hashing | ^6.0.0 |
+| `cors` | Cross-origin requests | ^2.8.6 |
+| `dotenv` | Environment variables | ^17.4.1 |
+| `node-cron` | Scheduled tasks | ^4.2.1 |
+| `mssql` | SQL Server driver | ^12.2.1 |
+| `xmlbuilder2` | XML generation | ^4.0.3 |
+| `uuid` | Unique IDs | ^14.0.0 |
+
+---
+
+## 🏗️ **BEST PRACTICES**
+
+✅ **Always use `asyncHandler`** to wrap async functions  
+✅ **Validate in middleware** before controller receives data  
+✅ **Throw custom errors** from services/controllers  
+✅ **Use repositories** for all database queries  
+✅ **Keep services focused** on business logic  
+✅ **Use Prisma ORM** for standard queries, raw SQL for complex ones  
+✅ **Never query database directly** from controllers  
+✅ **Log important events** for debugging  
+✅ **Use environment variables** for sensitive data  
+✅ **Return consistent response format** from all endpoints  
+
+---
+
+## 🚀 **DEPLOYMENT**
+
+### **Development**
+```bash
+npm start                  # Run locally
+npm run prisma:studio     # Open Prisma Studio
+docker-compose up         # Run with Docker
+```
+
+### **Production (EXE)**
+```cmd
+# Copy dist folder to server
+run.bat                   # Start application
+```
+
+### **Building EXE**
+```bash
+npm run build:win         # Build Windows executable
+npm run build:all         # Build for all platforms
+```
+
+---
+
+## 🆘 **TROUBLESHOOTING**
+
+| Issue | Solution |
+|-------|----------|
+| Database connection failed | Check DATABASE_URL in .env |
+| Prisma schema errors | Run `npm run prisma:generate` |
+| API route not working | Verify route in app.js has `app.use()` |
+| Validation errors | Check middleware applied to route |
+| Token authentication fails | Verify JWT_SECRET in .env |
+| CORS errors | Check CORS middleware in app.js |
+
+---
+
+## 📞 **SUPPORT & DOCUMENTATION**
+
+- **Prisma Docs**: https://www.prisma.io/docs/
+- **Express Docs**: https://expressjs.com/
+- **SQL Server Docs**: https://docs.microsoft.com/sql/
+- **JWT Docs**: https://jwt.io/
+
+---
+
+**Last Updated**: April 22, 2026  
+**Maintained By**: Development Team
