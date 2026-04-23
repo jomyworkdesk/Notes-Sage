@@ -5,3 +5,7 @@ CREATE TABLE EM_GoodsServiceType (
     IsActive BIT DEFAULT 1,
     CreatedDate DATETIME DEFAULT GETDATE()
 );
+
+
+ALTER TABLE EM_VATCategoryCode
+ADD ModifiedDate DATETIME NULL;
