@@ -1,0 +1,35 @@
+SELECT TOP (10)
+    YEAR(P.dPeriodDate) AS FinancialYear,
+    I.AutoIndex AS ReferenceNumber,
+    I.InvDate AS InvoiceIssueDate,
+    I.InvNumber AS InvoiceNumber,
+    I.DueDate AS InvoicePaymentDueDate,
+    CASE 
+        WHEN I.ForeignCurrencyID = 0 THEN 'AED'
+        ELSE CUR.VALUE
+    END AS InvoiceCurrencyCode,
+
+
+    C.Name AS BuyerName,
+    C.Physical1 AS BuyerAddressline1,
+    C.Physical2 AS BuyerCity,
+    ST.DisplayName AS BuyerCountrySubdivision
+
+FROM [InvNum] I
+LEFT JOIN PostGL PGL ON I.InvNumber = PGL.Reference
+LEFT JOIN [_etblPeriod] P ON PGL.Period = P.idPeriod
+LEFT JOIN EM_CurrencyCode_ISO4217 CUR ON CUR.MAPPED = I.ForeignCurrencyID
+LEFT JOIN Client C ON C.DCLink = I.AccountID
+LEFT JOIN EM_State ST ON C.iTaxState=ST.Mapping
+ORDER BY I.AutoIndex DESC;
+
+
+SELECT 
+      [Name] AS SellerName,
+      PhAddress1+PhAddress2 AS SellerAddressline1,
+      PhAddress3 AS SellerCity,
+      S.DisplayName AS SellerCountrySubdivision,
+      C.DisplayName as SellerCountryCode
+FROM [Entities] E
+LEFT JOIN EM_State S ON E.PhState=S.Mapping
+LEFT JOIN EM_CountryCode C ON E.PhCountry = C.Mapped
