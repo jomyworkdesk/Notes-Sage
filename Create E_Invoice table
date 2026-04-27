@@ -1,0 +1,47 @@
+CREATE TABLE [dbo].[E_Invoice] (
+
+    -- 🔹 Primary Key
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+
+    -- 🔹 Invoice Header
+    FinancialYear INT,
+    ReferenceNumber INT,
+    InvoiceIssueDate DATETIME,
+    InvoiceNumber VARCHAR(50),
+    InvoicePaymentDueDate DATETIME,
+    InvoiceCurrencyCode VARCHAR(10),
+    TransactionCode VARCHAR(50),
+
+    -- 🔹 Buyer Details
+    BuyerName VARCHAR(255),
+    BuyerAddressline1 VARCHAR(500),
+    BuyerCity VARCHAR(100),
+    BuyerCountrySubdivision VARCHAR(100),
+    BuyerCountry VARCHAR(100),
+
+    -- 🔹 Payment & VAT (Header Level)
+    PaymentType VARCHAR(100),
+    VatCategory VARCHAR(100),
+
+    -- 🔹 Invoice Line Details
+    InvoiceLineIdentifier INT,
+    InvoicedQuantity DECIMAL(18,4),
+    LineExtensionAmount DECIMAL(18,2),  -- fQuantityLineTotExcl
+    ItemName VARCHAR(255),
+    ItemDescription VARCHAR(500),
+    ItemVatCategory VARCHAR(100),
+    ItemVatPrice VARCHAR(100),
+    UOMCode VARCHAR(50),
+    ProcessedQuantity DECIMAL(18,4),
+    PriceExcl DECIMAL(18,2),
+
+    -- 🔹 Seller Details
+    SellerName VARCHAR(255),
+    SellerAddressline1 VARCHAR(500),
+    SellerCity VARCHAR(100),
+    SellerCountrySubdivision VARCHAR(100),
+    SellerCountryCode VARCHAR(50),
+
+    -- 🔹 Audit Fields
+    CreatedDate DATETIME DEFAULT GETDATE()
+);
