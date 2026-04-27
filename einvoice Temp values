@@ -8,6 +8,7 @@ SELECT TOP (100)
         WHEN I.ForeignCurrencyID = 0 THEN 'AED'
         ELSE CUR.VALUE
     END AS InvoiceCurrencyCode,
+    ITT.Value AS TransactionCode,
 
 
     C.Name AS BuyerName,
@@ -27,12 +28,8 @@ SELECT TOP (100)
     VIC.Value AS ItemVatCategory,
     VIC.Description AS ItemVatPrice,
     UOF.Value AS UOMCode,
-    IL.fQtyToProcess AS PROCEESEDQTY,
-    IL.fQtyToProcessLineTotExcl
-
-
-
-
+    IL.fQtyProcessed AS PROCEESEDQTY,
+    IL.fUnitPriceExcl AS PRICEEXCL
 
 
 
@@ -49,6 +46,7 @@ LEFT JOIN EM_State ST ON C.iTaxState=ST.Mapping
 LEFT JOIN EM_CountryCode CC ON C.iCountryID=CC.Mapped_rtbl
 LEFT JOIN EM_PaymentTypeCode PT ON I.ulIDPOrdPaymentmode = PT.Mapped
 LEFT JOIN EM_VATCategoryCode VC ON I.bTaxPerLine = VC.Mapped
+LEFT JOIN EM_InvoiceTransactionType ITT ON I.ulIDSOrdInvoiceTransactionType=ITT.Mapped
 
 LEFT JOIN _btblInvoiceLines IL ON IL.iInvoiceID=I.AutoIndex
 LEFT JOIN EM_VATCategoryCode VIC ON IL.iTaxTypeID = VIC.Mapped
