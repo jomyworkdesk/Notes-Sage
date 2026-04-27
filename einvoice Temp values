@@ -1,4 +1,4 @@
-SELECT TOP (10)
+SELECT TOP (100)
     YEAR(P.dPeriodDate) AS FinancialYear,
     I.AutoIndex AS ReferenceNumber,
     I.InvDate AS InvoiceIssueDate,
@@ -13,23 +13,62 @@ SELECT TOP (10)
     C.Name AS BuyerName,
     C.Physical1 AS BuyerAddressline1,
     C.Physical2 AS BuyerCity,
-    ST.DisplayName AS BuyerCountrySubdivision
+    ST.Value AS BuyerCountrySubdivision,
+    CC.Value AS BuyerCountry,
+
+    PT.Value AS PaymentType,
+    VC.Value AS VatCategory,
+
+    IL.idInvoiceLines AS InvoiceLineIdentifier,
+    IL.fQuantity AS InvoicedQuantity,
+    IL.fQuantityLineTotExcl,
+    IL.cDescription AS ItemName,
+    IL.cDescription AS ItemDescription,
+    VIC.Value AS ItemVatCategory,
+    VIC.Description AS ItemVatPrice,
+    UOF.Value AS UOMCode,
+    IL.fQtyToProcess AS PROCEESEDQTY,
+    IL.fQtyToProcessLineTotExcl
+
+
+
+
+
+
 
 FROM [InvNum] I
-LEFT JOIN PostGL PGL ON I.InvNumber = PGL.Reference
+LEFT JOIN (
+    SELECT Reference, MAX(Period) AS Period
+    FROM PostGL
+    GROUP BY Reference
+) PGL ON I.InvNumber = PGL.Reference
 LEFT JOIN [_etblPeriod] P ON PGL.Period = P.idPeriod
 LEFT JOIN EM_CurrencyCode_ISO4217 CUR ON CUR.MAPPED = I.ForeignCurrencyID
 LEFT JOIN Client C ON C.DCLink = I.AccountID
 LEFT JOIN EM_State ST ON C.iTaxState=ST.Mapping
+LEFT JOIN EM_CountryCode CC ON C.iCountryID=CC.Mapped_rtbl
+LEFT JOIN EM_PaymentTypeCode PT ON I.ulIDPOrdPaymentmode = PT.Mapped
+LEFT JOIN EM_VATCategoryCode VC ON I.bTaxPerLine = VC.Mapped
+
+LEFT JOIN _btblInvoiceLines IL ON IL.iInvoiceID=I.AutoIndex
+LEFT JOIN EM_VATCategoryCode VIC ON IL.iTaxTypeID = VIC.Mapped
+LEFT JOIN EM_UnitOfMeasure_UNECE UOF ON IL.iUnitsOfMeasureID = UOF.Mapped
+
+--where I.InvNumber = 'INV0215'
+
+WHERE I.DocState=4 AND I.DocType=4
+
 ORDER BY I.AutoIndex DESC;
 
 
-SELECT 
+SELECT TOP (1)
       [Name] AS SellerName,
       PhAddress1+PhAddress2 AS SellerAddressline1,
       PhAddress3 AS SellerCity,
-      S.DisplayName AS SellerCountrySubdivision,
-      C.DisplayName as SellerCountryCode
+      S.Value AS SellerCountrySubdivision,
+      C.Value as SellerCountryCode
 FROM [Entities] E
 LEFT JOIN EM_State S ON E.PhState=S.Mapping
-LEFT JOIN EM_CountryCode C ON E.PhCountry = C.Mapped
+LEFT JOIN EM_CountryCode C ON E.PhCountry = c.Mapped_rtbl
+
+order by idEntities DESC
