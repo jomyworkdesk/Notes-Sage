@@ -1,0 +1,13 @@
+INSERT INTO [NEWDB].[dbo].[EM_AllowanceChargeCode]
+           ([Value],
+            [DisplayName],
+            [Description],
+            [IsActive],
+            [CreatedDate])
+SELECT 
+            [Value],
+            [DisplayName],
+            [Description],
+            [IsActive],
+            [CreatedDate]
+FROM [OLDDB].[dbo].[EM_AllowanceChargeCode];
