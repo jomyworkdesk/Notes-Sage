@@ -1,0 +1,34 @@
+CREATE TABLE E_Seller (
+    
+    ID INT IDENTITY(1,1) PRIMARY KEY,  -- Primary Key
+
+    ORGID VARCHAR(50) UNIQUE,          -- Organization ID (Unique)
+
+    SEL_EADDR VARCHAR(150),            -- Seller Electronic Address
+    SEL_ESCHEME VARCHAR(50),           -- Seller Electronic Scheme Identifier
+    SEL_ID VARCHAR(100),               -- Seller Identifier
+
+    SEL_SCHEME_ID INT,                 -- Seller Scheme Identifier
+
+    SEL_LEGAL_ID VARCHAR(100),         -- Seller Legal Registration Identifier
+    SEL_LEGAL_SCHEME INT,              -- Seller Legal Scheme Identifier
+
+    SEL_VAT_CODE VARCHAR(50),          -- Seller VAT Scheme Code
+
+    SEL_COUNTRY_SUB INT,               -- Seller Country Subdivision
+    SEL_COUNTRY_CODE INT,              -- Seller Country Code
+
+    SEL_LEGAL_TYPE INT,                -- Seller Legal Registration Type
+
+    SEL_TRADE_LIC VARCHAR(100),        -- Trade License
+    SEL_EMIRATES_ID VARCHAR(50),       -- Emirates ID
+    SEL_PASSPORT VARCHAR(50),          -- Passport
+
+    SEL_CAB_DEC VARCHAR(100),          -- Cabinet Decision
+    SEL_AUTH_NAME VARCHAR(150),        -- Authority Name
+
+    SEL_PASS_COUNTRY INT,              -- Passport Issuing Country Code
+
+    SEL_EMAIL VARCHAR(150)             -- Contact Email
+
+);
