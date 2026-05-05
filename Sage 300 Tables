@@ -1,34 +1,64 @@
 CREATE TABLE E_Seller (
     
-    ID INT IDENTITY(1,1) PRIMARY KEY,  -- Primary Key
+    ID INT IDENTITY(1,1) PRIMARY KEY,   -- Primary Key
 
-    ORGID VARCHAR(50) UNIQUE,          -- Organization ID (Unique)
+    OrgID VARCHAR(50) UNIQUE,           -- Organization ID
 
-    SEL_EADDR VARCHAR(150),            -- Seller Electronic Address
-    SEL_ESCHEME VARCHAR(50),           -- Seller Electronic Scheme Identifier
-    SEL_ID VARCHAR(100),               -- Seller Identifier
+    ElectronicAddress VARCHAR(150),     
+    ElectronicSchemeID VARCHAR(50),     
+    SellerIdentifier VARCHAR(100),      
 
-    SEL_SCHEME_ID INT,                 -- Seller Scheme Identifier
+    SchemeID VARCHAR(50),               
 
-    SEL_LEGAL_ID VARCHAR(100),         -- Seller Legal Registration Identifier
-    SEL_LEGAL_SCHEME INT,              -- Seller Legal Scheme Identifier
+    LegalRegistrationID VARCHAR(100),   
+    LegalSchemeID VARCHAR(50),          
 
-    SEL_VAT_CODE VARCHAR(50),          -- Seller VAT Scheme Code
+    VATSchemeCode VARCHAR(50),          
 
-    SEL_COUNTRY_SUB INT,               -- Seller Country Subdivision
-    SEL_COUNTRY_CODE INT,              -- Seller Country Code
+    CountrySubdivision VARCHAR(50),     
+    CountryCode VARCHAR(50),            
 
-    SEL_LEGAL_TYPE INT,                -- Seller Legal Registration Type
+    LegalRegistrationType VARCHAR(50),  
 
-    SEL_TRADE_LIC VARCHAR(100),        -- Trade License
-    SEL_EMIRATES_ID VARCHAR(50),       -- Emirates ID
-    SEL_PASSPORT VARCHAR(50),          -- Passport
+    TradeLicense VARCHAR(100),          
+    EmiratesID VARCHAR(50),             
+    PassportNo VARCHAR(50),             
 
-    SEL_CAB_DEC VARCHAR(100),          -- Cabinet Decision
-    SEL_AUTH_NAME VARCHAR(150),        -- Authority Name
+    CabinetDecision VARCHAR(100),       
+    AuthorityName VARCHAR(150),         
 
-    SEL_PASS_COUNTRY INT,              -- Passport Issuing Country Code
+    PassportIssuingCountry VARCHAR(50), 
 
-    SEL_EMAIL VARCHAR(150)             -- Contact Email
+    ContactEmail VARCHAR(150)           
+);
 
+
+CREATE TABLE E_Buyer (
+    ID VARCHAR(50) PRIMARY KEY,
+    IDCUST VARCHAR(50) UNIQUE,
+
+    ElectronicAddress VARCHAR(150),
+    ElectronicAddressID VARCHAR(50),
+
+    BuyerIdentifier VARCHAR(50),
+    SchemeID VARCHAR(50),
+
+    LegalRegistrationID VARCHAR(50),
+    LegalSchemeID VARCHAR(50),
+
+    VATIdentifier VARCHAR(50),
+
+    CountrySubdivision VARCHAR(50),
+    CountryCode VARCHAR(50),
+
+    LegalRegistrationType VARCHAR(50),
+
+    TradeLicense VARCHAR(100),
+    EmiratesID VARCHAR(50),
+    PassportNo VARCHAR(50),
+
+    CabinetDecision VARCHAR(100),
+    AuthorityName VARCHAR(150),
+
+    PassportIssuingCountry VARCHAR(50)
 );
