@@ -159,3 +159,338 @@ CREATE TABLE EM_AllowanceCharge
     PRIMARY KEY (AutoIndex),
     UNIQUE (Value)
 );
+
+
+CREATE TABLE EM_BuyerLegalReg
+(
+    AutoIndex INTEGER NOT NULL,
+    Value INTEGER,
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_BuyerSellerAdd
+(
+    AutoIndex INTEGER NOT NULL,
+    Value INTEGER,
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_CEF_EAS
+(
+    AutoIndex INTEGER NOT NULL,
+    Value INTEGER,
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_ChargeCode
+(
+    AutoIndex INTEGER NOT NULL,
+    Value INTEGER,
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_ChargeReason
+(
+    AutoIndex INTEGER NOT NULL,
+    Value INTEGER,
+    DisplayName VARCHAR(300),
+    Description VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+
+CREATE TABLE EM_CountryCode
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped_rtbl INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_CreditNoteReason
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+
+
+CREATE TABLE EM_CurrencyCode
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_ElectroAddrScheme
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+
+CREATE TABLE EM_ExistingTrans
+(
+    AutoIndex INTEGER NOT NULL,
+    Id INTEGER,
+    Type VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+    PRIMARY KEY (AutoIndex)
+);
+
+CREATE TABLE EM_GoodsServiceType
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_IdentifierScheme
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_InvoiceTransaType
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_InvoiceTypeCode
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_Masters
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+CREATE TABLE EM_ItemClassifi
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+
+CREATE TABLE EM_MimeCode
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_ObjectIdentifier
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_PaymentTypeCode
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+
+CREATE TABLE EM_SellerLegalReg
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_State
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+
+CREATE TABLE EM_UnitOfMeasure
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+CREATE TABLE EM_VATCategory
+(
+    AutoIndex INTEGER NOT NULL,
+    Mapped INTEGER,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
+
+CREATE TABLE EM_VATExemption
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
