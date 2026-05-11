@@ -1,0 +1,161 @@
+CREATE TABLE E_AppLogger
+(
+    LogID BIGINT NOT NULL,
+    LogDateTime TIMESTAMP NOT NULL,
+    Level VARCHAR(20) NOT NULL,
+    Message LONGVARCHAR NOT NULL,
+    Data LONGVARCHAR,
+    Method VARCHAR(10),
+    Url VARCHAR(500),
+    StatusCode INTEGER,
+    DurationMs INTEGER,
+    UserId INTEGER,
+    UserName VARCHAR(100),
+    IPAddress VARCHAR(50),
+    UserAgent VARCHAR(500),
+    CreatedDate TIMESTAMP NOT NULL,
+
+    CONSTRAINT PK_E_AppLogger PRIMARY KEY (LogID)
+);
+
+CREATE TABLE E_InvoiceQueue
+(
+    QueueID INTEGER NOT NULL,
+    AutoIndex INTEGER NOT NULL,
+    InvNumber VARCHAR(50) NOT NULL,
+    InvDate TIMESTAMP,
+    IsInvoiced INTEGER,
+    IsSent INTEGER,
+    IsReceived INTEGER,
+    IsError INTEGER,
+    InvoicedAt TIMESTAMP,
+    SentAt TIMESTAMP,
+    ReceivedAt TIMESTAMP,
+    ErrorAt TIMESTAMP,
+    RetryCount INTEGER,
+    ErrorMessage LONGVARCHAR,
+    CreatedAt TIMESTAMP NOT NULL,
+    IsProcessing SMALLINT,
+    Status INTEGER,
+
+    CONSTRAINT PK_E_InvoiceQueue PRIMARY KEY (QueueID),
+    CONSTRAINT UQ_EInvoiceQueue_AutoIndex UNIQUE (AutoIndex)
+);
+
+
+CREATE TABLE E_WebLogin
+(
+    AutoIndex INTEGER NOT NULL,
+    AgentId INTEGER,
+    UserName VARCHAR(100),
+    UserPassword VARCHAR(4000),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+    ModifiedDate TIMESTAMP,
+
+    CONSTRAINT PK_E_WebLogin PRIMARY KEY (AutoIndex),
+    CONSTRAINT UQ_E_WebLogin_AgentId UNIQUE (AgentId)
+);
+
+
+CREATE TABLE E_WebLogin_Log
+(
+    LogID INTEGER NOT NULL,
+    AgentId INTEGER,
+    UserName VARCHAR(100),
+    LoginStatus VARCHAR(20),
+    LoginDateTime TIMESTAMP,
+    LogoutDateTime TIMESTAMP,
+    IPAddress VARCHAR(50),
+    Browser VARCHAR(255),
+    Country VARCHAR(100),
+    City VARCHAR(100),
+    Latitude DECIMAL(9,6),
+    Longitude DECIMAL(9,6),
+    FailureReason VARCHAR(255),
+    SessionId VARCHAR(100),
+
+    CONSTRAINT PK_E_WebLogin_Log PRIMARY KEY (LogID)
+);
+
+
+
+CREATE TABLE E_Buyer
+(
+    ID VARCHAR(50) NOT NULL,
+    IDCUST VARCHAR(50),
+    ElectronicAddress VARCHAR(150),
+    ElectronicAddressID VARCHAR(50),
+    BuyerIdentifier VARCHAR(50),
+    SchemeID VARCHAR(50),
+    LegalRegistrationID VARCHAR(50),
+    LegalSchemeID VARCHAR(50),
+    VATIdentifier VARCHAR(50),
+    CountrySubdivision VARCHAR(50),
+    CountryCode VARCHAR(50),
+    LegalRegisType VARCHAR(50),
+    TradeLicense VARCHAR(100),
+    EmiratesID VARCHAR(50),
+    PassportNo VARCHAR(50),
+    CabinetDecision VARCHAR(100),
+    AuthorityName VARCHAR(150),
+    PassportIssuCountry VARCHAR(50),
+
+    CONSTRAINT PK_E_Buyer PRIMARY KEY (ID),
+    CONSTRAINT UQ_E_Buyer_IDCUST UNIQUE (IDCUST)
+);
+
+
+
+CREATE TABLE E_Seller
+(
+    ID INTEGER NOT NULL,
+    OrgID VARCHAR(50),
+    ElectronicAddress VARCHAR(150),
+    ElectronicSchemeID VARCHAR(50),
+    SellerIdentifier VARCHAR(100),
+    SchemeID VARCHAR(50),
+    LegalRegistrationID VARCHAR(100),
+    LegalSchemeID VARCHAR(50),
+    VATSchemeCode VARCHAR(50),
+    CountrySubdivision VARCHAR(50),
+    CountryCode VARCHAR(50),
+    LegalRegistType VARCHAR(50),
+    TradeLicense VARCHAR(100),
+    EmiratesID VARCHAR(50),
+    PassportNo VARCHAR(50),
+    CabinetDecision VARCHAR(100),
+    AuthorityName VARCHAR(150),
+    PassportIssuCountry VARCHAR(50),
+    ContactEmail VARCHAR(150),
+
+    CONSTRAINT PK_E_Seller PRIMARY KEY (ID),
+    CONSTRAINT UQ_E_Seller_OrgID UNIQUE (OrgID)
+);
+
+
+CREATE TABLE E_Validations
+(
+    AutoIndex INTEGER NOT NULL,
+    Field VARCHAR(100),
+    Description VARCHAR(300),
+    Error VARCHAR(1000),
+    Remark VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+    CONSTRAINT PK_E_Validations PRIMARY KEY (AutoIndex)
+);
+
+CREATE TABLE EM_AllowanceCharge
+(
+    AutoIndex INTEGER NOT NULL,
+    Value INTEGER,
+    DisplayName VARCHAR(300),
+    Description VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
