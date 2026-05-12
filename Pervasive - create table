@@ -418,6 +418,19 @@ CREATE TABLE EM_PaymentTypeCode
     UNIQUE (Value)
 );
 
+CREATE TABLE EM_ObjectIdentifier
+(
+    AutoIndex INTEGER NOT NULL,
+    Value VARCHAR(50),
+    DisplayName VARCHAR(300),
+    IsActive SMALLINT,
+    CreatedDate TIMESTAMP,
+
+
+    PRIMARY KEY (AutoIndex),
+    UNIQUE (Value)
+);
+
 
 CREATE TABLE EM_SellerLegalReg
 (
