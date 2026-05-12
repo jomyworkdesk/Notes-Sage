@@ -334,9 +334,7 @@ CREATE TABLE EM_InvoiceTransaType
     ModifiedDate TIMESTAMP,
 
 
-    PRIMARY KEY (AutoIndex),
-    UNIQUE (Value)
-);
+    PRIMARY KEY (AutoIndex));
 
 CREATE TABLE EM_InvoiceTypeCode
 (
