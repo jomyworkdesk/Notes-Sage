@@ -353,7 +353,8 @@ CREATE TABLE e_invoice_response_log (
     serviceProviderId UNIQUEIDENTIFIER,
     responseCreatedDate DATETIME2,
 
-    responseMessage NVARCHAR(500),
+    responseMessage nvarchar(MAX),
+errorDetails nvarchar(MAX),
 
     createdby NVARCHAR(100),
     createdAt DATETIME DEFAULT GETDATE()
