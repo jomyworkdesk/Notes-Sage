@@ -331,3 +331,30 @@ CREATE TABLE e_invoicetokenlog (
     createdby NVARCHAR(100),
     createdAt DATETIME DEFAULT GETDATE()
 );
+
+
+
+CREATE TABLE e_invoice_response_log (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+
+    response_id UNIQUEIDENTIFIER,
+    messageId NVARCHAR(255),
+    instanceIdentifier NVARCHAR(255),
+
+    senderParticipantID NVARCHAR(255),
+    receiverParticipantID NVARCHAR(255),
+
+    documentTypeID NVARCHAR(500),
+    processID NVARCHAR(255),
+
+    transmissionType NVARCHAR(50),
+    status NVARCHAR(50),
+
+    serviceProviderId UNIQUEIDENTIFIER,
+    responseCreatedDate DATETIME2,
+
+    responseMessage NVARCHAR(500),
+
+    createdby NVARCHAR(100),
+    createdAt DATETIME DEFAULT GETDATE()
+);
