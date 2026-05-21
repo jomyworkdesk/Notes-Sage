@@ -1,6 +1,6 @@
 CREATE TABLE E_Invoicing (
 
-    ID BIGINT PRIMARY KEY AUTO_INCREMENT,
+ID INT PRIMARY KEY IDENTITY(1,1),
 
     DocType VARCHAR(100),
     EInvoiceType VARCHAR(100),
@@ -51,7 +51,7 @@ CREATE TABLE E_Invoicing (
     support_doc_ref VARCHAR(255),
     support_doc_desc TEXT,
 
-    attached_document LONGBLOB,
+    attached_document VARBINARY(MAX),
     attached_doc_mime_code VARCHAR(100),
     attached_doc_filename VARCHAR(255),
     external_doc_location TEXT,
@@ -256,7 +256,7 @@ CREATE TABLE E_Invoicing (
     invoice_line_obj_id VARCHAR(255),
     invoice_line_scheme_id VARCHAR(100),
 
-    charge_indicator BOOLEAN,
+    charge_indicator int,
 
     line_allow_reason_code VARCHAR(100),
     line_allow_reason TEXT,
@@ -312,8 +312,7 @@ CREATE TABLE E_Invoicing (
     invoice_line_amt_aed DECIMAL(18,2),
     vat_line_amt_aed DECIMAL(18,2),
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP
+created_at DATETIME DEFAULT GETDATE(),
+updated_at DATETIME DEFAULT GETDATE()
 
-);ff
+);
