@@ -1,0 +1,319 @@
+CREATE TABLE E_Invoicing (
+
+    ID BIGINT PRIMARY KEY AUTO_INCREMENT,
+
+    DocType VARCHAR(100),
+    EInvoiceType VARCHAR(100),
+
+    spec_identifier VARCHAR(255),
+    business_process_type VARCHAR(255),
+    invoice_txn_type_code VARCHAR(100),
+    invoice_no VARCHAR(255),
+    unique_identifier_no VARCHAR(255),
+
+    invoice_issue_date DATE,
+    invoice_issue_time TIME,
+    payment_due_date DATE,
+    invoice_type_code VARCHAR(100),
+    invoice_note TEXT,
+    vat_tax_point_date DATE,
+
+    invoice_currency_code VARCHAR(10),
+    tax_account_currency VARCHAR(10),
+
+    buyer_account_ref VARCHAR(255),
+    buyer_reference VARCHAR(255),
+
+    invoice_period_start DATE,
+    invoice_period_end DATE,
+    billing_frequency VARCHAR(100),
+
+    purchase_order_ref VARCHAR(255),
+    sales_order_ref VARCHAR(255),
+    preceding_invoice_ref VARCHAR(255),
+    preceding_invoice_date DATE,
+
+    credit_note_reason_code VARCHAR(100),
+    despatch_advice_ref VARCHAR(255),
+    receiving_advice_ref VARCHAR(255),
+    customs_ref_no VARCHAR(255),
+    project_ref VARCHAR(255),
+    tender_lot_ref VARCHAR(255),
+
+    contract_ref VARCHAR(255),
+    contract_value DECIMAL(18,2),
+
+    invoiced_obj_id VARCHAR(255),
+    invoiced_obj_scheme_id VARCHAR(100),
+
+    document_type_code VARCHAR(100),
+
+    support_doc_ref VARCHAR(255),
+    support_doc_desc TEXT,
+
+    attached_document LONGBLOB,
+    attached_doc_mime_code VARCHAR(100),
+    attached_doc_filename VARCHAR(255),
+    external_doc_location TEXT,
+
+    seller_elec_address VARCHAR(255),
+    seller_elec_scheme_id VARCHAR(100),
+
+    seller_id VARCHAR(255),
+    seller_scheme_id VARCHAR(100),
+
+    seller_trade_name VARCHAR(255),
+
+    seller_addr_line1 VARCHAR(255),
+    seller_addr_line2 VARCHAR(255),
+    seller_addr_line3 VARCHAR(255),
+
+    seller_city VARCHAR(100),
+    seller_post_code VARCHAR(50),
+    seller_country_subdivision VARCHAR(100),
+    seller_country_code VARCHAR(10),
+
+    seller_vat_id VARCHAR(255),
+    seller_tax_scheme_code VARCHAR(100),
+
+    seller_name VARCHAR(255),
+
+    seller_legal_reg_id VARCHAR(255),
+    seller_legal_scheme_id VARCHAR(100),
+    seller_authority_name VARCHAR(255),
+
+    seller_passport_country_code VARCHAR(10),
+    seller_legal_reg_type VARCHAR(100),
+
+    seller_contact_point VARCHAR(255),
+    seller_contact_phone VARCHAR(50),
+    seller_contact_email VARCHAR(255),
+
+    buyer_elec_address VARCHAR(255),
+    buyer_elec_scheme_id VARCHAR(100),
+
+    buyer_id VARCHAR(255),
+    buyer_scheme_id VARCHAR(100),
+
+    buyer_trade_name VARCHAR(255),
+
+    buyer_addr_line1 VARCHAR(255),
+    buyer_addr_line2 VARCHAR(255),
+    buyer_addr_line3 VARCHAR(255),
+
+    buyer_city VARCHAR(100),
+    buyer_post_code VARCHAR(50),
+    buyer_country_subdivision VARCHAR(100),
+    buyer_country_code VARCHAR(10),
+
+    buyer_vat_id VARCHAR(255),
+    buyer_tax_scheme_code VARCHAR(100),
+
+    buyer_name VARCHAR(255),
+
+    buyer_legal_reg_id VARCHAR(255),
+    buyer_legal_scheme_id VARCHAR(100),
+    buyer_authority_name VARCHAR(255),
+
+    buyer_passport_country_code VARCHAR(10),
+    buyer_legal_reg_type VARCHAR(100),
+
+    buyer_contact_point VARCHAR(255),
+    buyer_contact_phone VARCHAR(50),
+    buyer_contact_email VARCHAR(255),
+
+    payee_id VARCHAR(255),
+    payee_scheme_id VARCHAR(100),
+    payee_name VARCHAR(255),
+
+    payee_legal_reg_id VARCHAR(255),
+    payee_legal_scheme_id VARCHAR(100),
+
+    beneficiary_id VARCHAR(255),
+    principle_id VARCHAR(255),
+
+    seller_tax_rep_name VARCHAR(255),
+
+    tax_rep_addr_line1 VARCHAR(255),
+    tax_rep_addr_line2 VARCHAR(255),
+    tax_rep_addr_line3 VARCHAR(255),
+
+    tax_rep_city VARCHAR(100),
+    tax_rep_post_code VARCHAR(50),
+    tax_rep_country_subdivision VARCHAR(100),
+    tax_rep_country_code VARCHAR(10),
+
+    seller_tax_rep_vat_id VARCHAR(255),
+    tax_rep_tax_scheme_code VARCHAR(100),
+
+    actual_delivery_date DATE,
+
+    deliver_to_location_id VARCHAR(255),
+    deliver_to_scheme_id VARCHAR(100),
+
+    deliver_to_addr_line1 VARCHAR(255),
+    deliver_to_addr_line2 VARCHAR(255),
+    deliver_to_addr_line3 VARCHAR(255),
+
+    deliver_to_city VARCHAR(100),
+    deliver_to_post_code VARCHAR(50),
+    deliver_to_country_subdivision VARCHAR(100),
+    deliver_to_country_code VARCHAR(10),
+
+    deliver_to_party_id VARCHAR(255),
+    deliver_to_party_name VARCHAR(255),
+
+    incoterms VARCHAR(100),
+    incoterms_scheme_id VARCHAR(100),
+
+    payment_instruction_id VARCHAR(255),
+    payment_means_type_code VARCHAR(100),
+    payment_means_text TEXT,
+
+    remittance_info TEXT,
+    remittance_scheme_id VARCHAR(100),
+
+    payment_card_no VARCHAR(50),
+    payment_card_holder_name VARCHAR(255),
+
+    payment_account_id VARCHAR(255),
+    payment_account_scheme_id VARCHAR(100),
+    payment_account_name VARCHAR(255),
+
+    payment_service_provider_id VARCHAR(255),
+
+    payment_terms TEXT,
+
+    syntax_binding_qualifier VARCHAR(100),
+
+    doc_allow_reason_code VARCHAR(100),
+    doc_allow_reason TEXT,
+    doc_allow_percent DECIMAL(10,2),
+    doc_allow_amount DECIMAL(18,2),
+    doc_allow_base_amount DECIMAL(18,2),
+
+    doc_allow_vat_cat_code VARCHAR(100),
+    doc_allow_vat_rate DECIMAL(10,2),
+
+    doc_allow_vat_exempt_code VARCHAR(100),
+    doc_allow_vat_exempt_text TEXT,
+
+    doc_allow_tax_scheme_code VARCHAR(100),
+
+    doc_charge_reason_code VARCHAR(100),
+    doc_charge_reason TEXT,
+    doc_charge_percent DECIMAL(10,2),
+    doc_charge_amount DECIMAL(18,2),
+    doc_charge_base_amount DECIMAL(18,2),
+
+    doc_charge_vat_cat_code VARCHAR(100),
+    doc_charge_vat_rate DECIMAL(10,2),
+
+    doc_charge_vat_exempt_code VARCHAR(100),
+    doc_charge_vat_exempt_text TEXT,
+
+    doc_charge_tax_scheme_code VARCHAR(100),
+
+    source_currency_code VARCHAR(10),
+    target_currency_code VARCHAR(10),
+    calculation_rate DECIMAL(18,6),
+
+    invoice_total_tax_amt DECIMAL(18,2),
+
+    vat_cat_taxable_amt DECIMAL(18,2),
+    vat_cat_tax_amt DECIMAL(18,2),
+    vat_cat_code VARCHAR(100),
+    vat_cat_rate DECIMAL(10,2),
+    vat_cat_tax_scheme_code VARCHAR(100),
+
+    invoice_total_vat_tax_currency DECIMAL(18,2),
+
+    invoice_line_net_total DECIMAL(18,2),
+
+    invoice_total_without_tax DECIMAL(18,2),
+    invoice_total_with_tax DECIMAL(18,2),
+
+    total_doc_allowances DECIMAL(18,2),
+    total_doc_charges DECIMAL(18,2),
+
+    paid_amount DECIMAL(18,2),
+    rounding_amount DECIMAL(18,2),
+    amount_due DECIMAL(18,2),
+
+    invoice_line_id VARCHAR(255),
+    invoice_line_note TEXT,
+
+    invoiced_qty DECIMAL(18,2),
+    invoiced_qty_uom_code VARCHAR(50),
+
+    invoice_line_net_amt DECIMAL(18,2),
+
+    invoice_line_buyer_acc_ref VARCHAR(255),
+
+    invoice_line_period_start DATE,
+    invoice_line_period_end DATE,
+
+    invoice_line_obj_id VARCHAR(255),
+    invoice_line_scheme_id VARCHAR(100),
+
+    charge_indicator BOOLEAN,
+
+    line_allow_reason_code VARCHAR(100),
+    line_allow_reason TEXT,
+    line_allow_percent DECIMAL(10,2),
+    line_allow_amount DECIMAL(18,2),
+    line_allow_base_amount DECIMAL(18,2),
+
+    line_charge_reason_code VARCHAR(100),
+    line_charge_reason TEXT,
+    line_charge_percent DECIMAL(10,2),
+    line_charge_amount DECIMAL(18,2),
+    line_charge_base_amount DECIMAL(18,2),
+
+    item_description TEXT,
+    item_name VARCHAR(255),
+
+    item_buyer_id VARCHAR(255),
+    item_seller_id VARCHAR(255),
+
+    item_standard_id VARCHAR(255),
+    item_scheme_id VARCHAR(100),
+
+    service_acc_code VARCHAR(100),
+    service_acc_scheme_id VARCHAR(100),
+
+    item_country_origin VARCHAR(100),
+    goods_service_type VARCHAR(255),
+
+    item_type VARCHAR(100),
+
+    item_classification_id VARCHAR(255),
+    item_classification_scheme_id VARCHAR(100),
+
+    item_vat_cat_code VARCHAR(100),
+    item_vat_rate DECIMAL(10,2),
+
+    vat_exempt_reason_code VARCHAR(100),
+    vat_exempt_reason_text TEXT,
+
+    item_tax_scheme VARCHAR(100),
+
+    item_attribute_name VARCHAR(255),
+    item_attribute_value VARCHAR(255),
+
+    item_net_price DECIMAL(18,2),
+
+    item_price_base_qty DECIMAL(18,2),
+    item_price_base_uom_code VARCHAR(50),
+
+    item_price_discount DECIMAL(18,2),
+    item_gross_price DECIMAL(18,2),
+
+    invoice_line_amt_aed DECIMAL(18,2),
+    vat_line_amt_aed DECIMAL(18,2),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+
+);ff
