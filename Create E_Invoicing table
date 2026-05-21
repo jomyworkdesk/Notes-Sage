@@ -316,3 +316,18 @@ created_at DATETIME DEFAULT GETDATE(),
 updated_at DATETIME DEFAULT GETDATE()
 
 );
+
+
+
+
+CREATE TABLE e_invoicetokenlog (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    
+    access_token NVARCHAR(MAX),
+    expires_in INT,
+    refresh_token NVARCHAR(MAX),
+    token_type NVARCHAR(50),
+
+    createdby NVARCHAR(100),
+    createdAt DATETIME DEFAULT GETDATE()
+);
