@@ -1,20 +1,20 @@
-CREATE PROCEDURE CopyTable
-(
-    @OldDatabase NVARCHAR(100),
-    @NewDatabase NVARCHAR(100),
-    @TableName NVARCHAR(100)
-)
-AS
-BEGIN
+DECLARE @OldDatabase NVARCHAR(100);
+DECLARE @NewDatabase NVARCHAR(100);
+DECLARE @TableName NVARCHAR(100);
+DECLARE @SQL NVARCHAR(MAX);
 
-    DECLARE @SQL NVARCHAR(MAX);
+-- Declare values
+SET @OldDatabase = 'ALRTEST';
+SET @NewDatabase = 'ALTREST11NEW';
+SET @TableName = 'PAR';
 
-    SET @SQL = '
-    SELECT *
-    INTO ' + QUOTENAME(@NewDatabase) + '.dbo.' + QUOTENAME(@TableName) + '
-    FROM ' + QUOTENAME(@OldDatabase) + '.dbo.' + QUOTENAME(@TableName) + '
-    WHERE 1 = 0;';
+-- Copy only table structure
+SET @SQL = '
+SELECT *
+INTO ' + QUOTENAME(@NewDatabase) + '.dbo.' + QUOTENAME(@TableName) + '
+FROM ' + QUOTENAME(@OldDatabase) + '.dbo.' + QUOTENAME(@TableName) + '
+WHERE 1 = 0;
+';
 
-    EXEC sp_executesql @SQL;
-
-END
+-- Execute query
+EXEC sp_executesql @SQL;
