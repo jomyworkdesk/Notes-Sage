@@ -1,0 +1,41 @@
+# Codex Usage Rules
+
+The user usually provides a clear step-by-step plan. Follow the requested step only.
+
+## Work Style
+
+- Do only the current requested step.
+- Do not continue to the next step unless the user asks.
+- Keep changes minimal and focused.
+- Do not refactor unrelated code.
+- Do not redesign existing logic unless required for the current step.
+- Prefer editing only the files directly related to the request.
+- If the request is unclear, ask before making broad changes.
+
+## Command Rules
+
+- Do not run database tests.
+- Do not connect to the database.
+- Do not run migrations unless explicitly asked.
+- Do not run frontend builds.
+- Do not start frontend or backend servers.
+- Do not install packages unless explicitly asked.
+- Do not run full test suites.
+- Avoid executing app code unless the user specifically requests it.
+
+## Verification
+
+- Use static inspection only unless the user asks for runtime testing.
+- After changes, summarize:
+  - files changed
+  - what was changed
+  - what the user should manually check
+- Provide manual testing steps instead of running tests or builds.
+
+## Usage Saving
+
+- Use targeted file search instead of scanning the whole project.
+- Read only the files needed for the current step.
+- Avoid repeated large file reads.
+- Avoid long explanations unless the user asks.
+- Keep responses concise and practical.
