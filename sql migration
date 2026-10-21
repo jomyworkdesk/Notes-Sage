@@ -1,0 +1,54 @@
+DECLARE @SourceDB VARCHAR(100)
+DECLARE @DestDB1 VARCHAR(100)
+DECLARE @DestDB2 VARCHAR(100)
+DECLARE @DestDB3 VARCHAR(100)
+DECLARE @TableName VARCHAR(100)
+DECLARE @SQL NVARCHAR(MAX)
+
+SET @SourceDB = 'ARTAX200'
+SET @DestDB1 = 'DatabaseA'
+SET @DestDB2 = 'DatabaseB'
+SET @DestDB3 = 'DatabaseC'
+SET @TableName = 'EM_VATExemptionReason'
+
+-- Destination 1
+IF OBJECT_ID(QUOTENAME(@DestDB1) + '.dbo.' + QUOTENAME(@TableName), 'U') IS NULL
+BEGIN
+    SET @SQL = N'SELECT * INTO ' + QUOTENAME(@DestDB1) + '.dbo.' + QUOTENAME(@TableName)
+             + N' FROM ' + QUOTENAME(@SourceDB) + '.dbo.' + QUOTENAME(@TableName)
+    EXEC sp_executesql @SQL
+END
+ELSE
+BEGIN
+    SET @SQL = N'INSERT INTO ' + QUOTENAME(@DestDB1) + '.dbo.' + QUOTENAME(@TableName)
+             + N' SELECT * FROM ' + QUOTENAME(@SourceDB) + '.dbo.' + QUOTENAME(@TableName)
+    EXEC sp_executesql @SQL
+END
+
+-- Destination 2
+IF OBJECT_ID(QUOTENAME(@DestDB2) + '.dbo.' + QUOTENAME(@TableName), 'U') IS NULL
+BEGIN
+    SET @SQL = N'SELECT * INTO ' + QUOTENAME(@DestDB2) + '.dbo.' + QUOTENAME(@TableName)
+             + N' FROM ' + QUOTENAME(@SourceDB) + '.dbo.' + QUOTENAME(@TableName)
+    EXEC sp_executesql @SQL
+END
+ELSE
+BEGIN
+    SET @SQL = N'INSERT INTO ' + QUOTENAME(@DestDB2) + '.dbo.' + QUOTENAME(@TableName)
+             + N' SELECT * FROM ' + QUOTENAME(@SourceDB) + '.dbo.' + QUOTENAME(@TableName)
+    EXEC sp_executesql @SQL
+END
+
+-- Destination 3
+IF OBJECT_ID(QUOTENAME(@DestDB3) + '.dbo.' + QUOTENAME(@TableName), 'U') IS NULL
+BEGIN
+    SET @SQL = N'SELECT * INTO ' + QUOTENAME(@DestDB3) + '.dbo.' + QUOTENAME(@TableName)
+             + N' FROM ' + QUOTENAME(@SourceDB) + '.dbo.' + QUOTENAME(@TableName)
+    EXEC sp_executesql @SQL
+END
+ELSE
+BEGIN
+    SET @SQL = N'INSERT INTO ' + QUOTENAME(@DestDB3) + '.dbo.' + QUOTENAME(@TableName)
+             + N' SELECT * FROM ' + QUOTENAME(@SourceDB) + '.dbo.' + QUOTENAME(@TableName)
+    EXEC sp_executesql @SQL
+END
