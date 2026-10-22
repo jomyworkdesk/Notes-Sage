@@ -52,3 +52,41 @@ BEGIN
              + N' SELECT * FROM ' + QUOTENAME(@SourceDB) + '.dbo.' + QUOTENAME(@TableName)
     EXEC sp_executesql @SQL
 END
+
+
+
+
+
+
+
+DECLARE @SourceDB VARCHAR(100)
+DECLARE @DestDB1 VARCHAR(100)
+DECLARE @TableName VARCHAR(100)
+DECLARE @SQL NVARCHAR(MAX)
+
+SET @SourceDB = 'ARTAX_200_v7'
+SET @DestDB1 = 'ARTAX'
+
+SET @TableName = 'EM_VATExemptionReason'
+
+
+-- Destination No data 
+
+IF OBJECT_ID(
+    QUOTENAME(@DestDB1) + '.dbo.' + QUOTENAME(@TableName),
+    'U'
+) IS NULL
+BEGIN
+    SET @SQL = N'
+        SELECT TOP (0) *
+        INTO ' + QUOTENAME(@DestDB1) + '.dbo.' + QUOTENAME(@TableName) + N'
+        FROM ' + QUOTENAME(@SourceDB) + '.dbo.' + QUOTENAME(@TableName) + N';';
+
+    EXEC sp_executesql @SQL;
+
+    PRINT 'Table created successfully without data.';
+END
+ELSE
+BEGIN
+    PRINT 'Table already exists in the destination database.';
+END;
